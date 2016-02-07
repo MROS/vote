@@ -1,0 +1,16 @@
+#main {
+	margin-top: 20px;
+	width: 100%;
+}
+#main h1 {
+	text-align: center;
+	margin-bottom: 80px;
+}
+#setting {
+	width: 500px;
+	margin: 0px auto;
+}
+
+#setting p {
+	margin-top: 20px;
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+	<meta charset="UTF-8">
+	<title>投票</title>
+	<link rel="stylesheet" href="https://cdn.rawgit.com/jgthms/bulma/master/css/bulma.min.css">
+	<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+	<div id="main">
+		<h1 class="title is-2">開始建立您的票選活動</h1>
+		<div id="setting">
+			<p class="control">
+				<input v-model="title" class="input" type="text" placeholder="票選名稱">
+			</p>
+			<p class="control is-grouped">
+				<input class="input" type="text" placeholder="選項" v-model="new_choice" v-on:keyup.enter="add">
+				<a class="button is-info" v-on:click="add">
+					加入
+				</a>
+			</p>
+			<ul>
+				<li v-for="choice in choices">
+					<span class="tag is-success is-medium">
+						{{ choice }}
+						<button class="delete" v-on:click="remove($index)"></button>
+					</span>
+				</li>
+			</ul>
+			<p class="control">
+				<span class="select">
+					<select v-model="one_or_many">
+						<option selected>複選</option>
+						<option>單選</option>
+					</select>
+				</span>
+			</p>
+			<p class="control">
+				<label class="radio">
+					<input type="radio" name="need_login" value="no" v-model="need_login">
+					不需登入
+				</label>
+				<label class="radio">
+					<input type="radio" name="need_login" value="yes" v-model="need_login">
+					需要登入
+				</label>
+			</p>
+			<p class="control">
+				<label class="radio">
+					<input type="radio" name="need_name" value="no" v-model="need_name">
+					匿名
+				</label>
+				<label class="radio">
+					<input type="radio" name="need_name" value="yes" v-model="need_name">
+					記名
+				</label>
+			</p>
+			<p class="control">
+				<button v-on:click="submit" class="button is-primary">建立</button>
+				<button class="button">取消</button>
+			</p>
+		</div>
+	</div>
+	<script type="text/javascript" src="bower_components/vue/dist/vue.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+</body>
+</html>
