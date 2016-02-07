@@ -11,6 +11,10 @@ app.use(serve('public'));
 //   this.body = 'jjjj World';
 // });
 
+router.get("/data", function *(next) {
+	this.body = JSON.stringify({title: "abcd"});
+})
+
 app.use(router.routes())
    .use(router.allowedMethods());
 

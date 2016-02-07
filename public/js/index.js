@@ -19,7 +19,7 @@ new Vue({
 					return;
 				}
 			}
-			if (choices.length = 1) {
+			if (choices.length <= 0) {
 				this.alert = true;
 				return;
 			}
