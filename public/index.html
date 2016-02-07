@@ -55,6 +55,10 @@
 					記名
 				</label>
 			</p>
+			<div v-if="alert" class="notification is-danger">
+				<button class="delete" v-on:click="hide_alert"></button>
+				資料尚未填寫完畢喔！
+			</div>
 			<p class="control">
 				<button v-on:click="submit" class="button is-primary">建立</button>
 				<button class="button">取消</button>

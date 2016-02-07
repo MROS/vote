@@ -6,16 +6,23 @@ new Vue({
 		choices: [],
 		one_or_many: '',
 		need_name: '',
-		need_login: ''
+		need_login: '',
+		alert: false
 	},
 	methods: {
 		submit: function () {
-			console.log(this.title);
-			console.log(this.new_choice);
-			console.log(this.choices);
-			console.log(this.one_or_many);
-			console.log(this.need_login);
-			console.log(this.need_name);
+			// TODO: 需要更強的檢查
+			var needed = [this.title, this.one_or_many, this.need_name, this.need_login];
+			for (var i of needed) {
+				if (i == '') {
+					this.alert = true;
+					return;
+				}
+			}
+			if (choices.length = 1) {
+				this.alert = true;
+				return;
+			}
 		},
 		add: function() {
 			this.choices.push(this.new_choice);
@@ -23,6 +30,10 @@ new Vue({
 		},
 		remove: function(index) {
 			this.choices.splice(index, 1)
+		},
+		hide_alert: function() {
+			this.alert = false;
 		}
+
 	}
 })
