@@ -78,10 +78,11 @@
 				}
 				if (target != null) {
 					console.log(event);
-					if (this.selected.indexOf(target.name) >= 0) { // indexOf在找不到目標時回傳-1
-						target.number--;
+					var id = this.selected.indexOf(target.name);
+					if (id >= 0) { // indexOf在找不到目標時回傳-1
+						target.voters.splice("kk", 1);
 					} else {
-						target.number++;
+						target.voters.push("kk");
 					}
 				}
 			}

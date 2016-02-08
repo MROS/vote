@@ -1,47 +1,29 @@
+var config = require('./config.js');
 var koa = require('koa');
-var logger = require('koa-logger');
-var serve = require('koa-static');
 var router = require('koa-router')();
-var bodyParser = require('koa-bodyparser')();
-var random_url = require('./util.js').random_url;
-var fs = require('co-fs');
-
 var app = koa();
-app.use(logger());
+
+var serve = require('koa-static');
+var logger = require('koa-logger');
+var bodyParser = require('koa-bodyparser')();
 app.use(serve('public'));
+app.use(logger());
 app.use(bodyParser);
 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/voting');
+var fs = require('co-fs');
+var Voting = require('./db.js').Voting;
+var random_url = require('./util.js').random_url;
 
+const session = require('koa-generic-session')
+app.keys = config.keys;
+app.use(session())
 
-var Voting = mongoose.model(
-	'voting',
-	{
-		index: String,
-		title: String,
-		multi_select: Boolean,
-		need_name: Boolean,
-		need_login: Boolean,
-		choices: [
-			{name: String, voters: [{user: String, id: String}]}
-		]
-	}
-);
+var passport = require('koa-passport');
+require('./auth.js');
+app.use(passport.initialize())
+app.use(passport.session())
 
-// app.use(function *(){
-//   this.body = 'jjjj World';
-// });
-
-router.get("/data/:index", function *(next) {
-	var data = yield Voting.findOne({index: this.params.index}).exec();
-	console.log(data);
-	this.body = JSON.stringify(data);
-});
-
-router.get("/q/:index", function *(next) {
-	this.body = yield fs.readFile('public/voting.html', 'utf8');
-});
+// 創建頁
 
 router.post("/create", function *(next) {
 	var data = this.request.body;
@@ -56,6 +38,37 @@ router.post("/create", function *(next) {
 	var url = "/q/" + index;
 	this.body = JSON.stringify({url: url});
 });
+
+// auth
+
+router.get('/auth/facebook', passport.authenticate('facebook'));
+
+router.get('/auth/facebook/callback',
+		  passport.authenticate(
+			  'facebook',
+			  {
+				  successRedirect: '/user',
+				  failureRedirect: '/'
+			  }
+		  )
+);
+
+router.get('/user', function *(next) {
+	this.body = this.req.user;
+})
+
+// 問題頁
+
+router.get("/data/:index", function *(next) {
+	var data = yield Voting.findOne({index: this.params.index}).exec();
+	console.log(data);
+	this.body = JSON.stringify(data);
+});
+
+router.get("/q/:index", function *(next) {
+	this.body = yield fs.readFile('public/voting.html', 'utf8');
+});
+
 
 app.use(router.routes())
    .use(router.allowedMethods());
