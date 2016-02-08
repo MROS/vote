@@ -85,6 +85,17 @@
 						target.voters.push("kk");
 					}
 				}
+				var index = window.location.pathname.substring(3);
+				this.$http.post('/update/' + index, JSON.stringify(selected)).then(
+					function (response) {
+						console.log(response);
+						this.title = response.data.title;
+						this.choices = response.data.choices;
+					},
+					function (response) {
+						console.log("response error");
+					}
+				);
 			}
 		}
 	})

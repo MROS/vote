@@ -23,6 +23,9 @@ require('./auth.js');
 app.use(passport.initialize())
 app.use(passport.session())
 
+var events = require('events');
+var emmiter = new events.EventEmitter();
+
 // 創建頁
 
 router.post("/create", function *(next) {
@@ -66,11 +69,18 @@ router.get("/data/:index", function *(next) {
 });
 
 router.get("/q/:index", function *(next) {
+	if (this.session.who == null) {
+		this.session.who = random_url();
+	}
 	this.body = yield fs.readFile('public/voting.html', 'utf8');
+});
+
+router.post("update/:index", function *(next) {
+	
 });
 
 
 app.use(router.routes())
    .use(router.allowedMethods());
 
-app.listen(3000);
+app.listen(config.port);

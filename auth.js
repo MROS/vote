@@ -17,7 +17,7 @@ passport.use(
 	new FacebookStrategy({
 		clientID: config.clientID,
 		clientSecret: config.clientSecret,
-		callbackURL: 'http://localhost:3000' + '/auth/facebook/callback'
+		callbackURL: 'http://localhost:' + config.port + '/auth/facebook/callback'
 	},
 	function(token, tokenSecret, profile, done) {
 		var user = {id: profile.id, name: profile.displayName}
