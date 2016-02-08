@@ -1,6 +1,7 @@
 module.exports = {
 	entry: {
-		voting: './voting.js'
+		voting: './voting.js',
+		index: './index.js',
 	}
 	,
 	output: {

@@ -4,13 +4,35 @@
 	<meta charset="UTF-8">
 	<title></title>
 	<link rel="stylesheet" href="https://cdn.rawgit.com/jgthms/bulma/master/css/bulma.min.css">
-	<link rel="stylesheet" href="css/voting.css">
+	<link rel="stylesheet" href="/css/voting.css">
 </head>
 <body>
 	<div id="voting">
 		<h1 class="title is-2">{{title}}</h1>
+		<div id="choices">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>選項</th>
+						<th>票數</th>
+					</tr>
+				</thead>
+				<tbody v-for="choice in choices">
+					<tr>
+						<th>
+							<label class="checkbox">
+								<input type="checkbox" v-on:click="select(choice.name, $event)" value={{choice.name}} name="choice" v-model="selected">
+								{{choice.name}}
+							</label>
+						</th>
+						<th>{{choice.voters.length}}</th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<span>{{selected | json}}</span>
 	</div>
 
-	<script type="text/javascript" src="js/voting.bundle.js"></script>
+	<script type="text/javascript" src="/js/voting.bundle.js"></script>
 </body>
 </html>

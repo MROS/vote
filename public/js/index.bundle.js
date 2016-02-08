@@ -48,42 +48,56 @@
 	Vue.use(__webpack_require__(2));
 
 	new Vue({
-		el: '#voting',
+		el: '#setting',
 		data: {
 			title: '',
-			choices: [
-			],
-			selected: []
-		},
-		ready: function() {
-			var index = window.location.pathname.substring(3);
-			this.$http.get('/data/' + index).then(
-				function (response) {
-					console.log(response);
-					this.title = response.data.title;
-					this.choices = response.data.choices;
-				},
-				function (response) {
-					console.log("response error");
-				}
-			);
+			new_choice: '',
+			choices: [],
+			multi_select: '',
+			need_name: '',
+			need_login: '',
+			alert: false
 		},
 		methods: {
-			select: function(item, event) {
-				var target = null;
-				for (i of this.choices) {
-					if (i.name == item) {
-						target = i;
+			submit: function () {
+				// TODO: 需要更強的檢查
+				var needed = [this.title, this.multi_select, this.need_name, this.need_login];
+				for (var i of needed) {
+					if (i == '') {
+						this.alert = true;
+						return;
 					}
 				}
-				if (target != null) {
-					console.log(event);
-					if (this.selected.indexOf(target.name) >= 0) { // indexOf在找不到目標時回傳-1
-						target.number--;
-					} else {
-						target.number++;
-					}
+				if (this.choices.length <= 0) {
+					this.alert = true;
+					return;
 				}
+
+				data = {
+					title: this.title,
+					multi_select: this.multi_select == "複選" ? true: false,
+					need_name: this.need_name == "yes" ? true: false,
+					need_login: this.need_login == "yes" ? true: false,
+					choices: this.choices
+				};
+				console.log(JSON.stringify(data))
+				this.$http.post('/create', JSON.stringify(data)).then(
+					function(response) {
+						var url = response.data.url;
+						window.location.pathname = url;
+					},
+					function() {}
+				);
+			},
+			add: function() {
+				this.choices.push(this.new_choice);
+				this.new_choice = '';
+			},
+			remove: function(index) {
+				this.choices.splice(index, 1)
+			},
+			hide_alert: function() {
+				this.alert = false;
 			}
 		}
 	})
