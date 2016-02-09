@@ -13,13 +13,12 @@
 		<div id="setting">
 			<p>
 				{{about_setting}}
-				<!-- #不匿名 #需登入 #複選 -->
 			</p>
 			<p>
 				使用者名稱為 &nbsp;&nbsp;&nbsp; <span class="changed_data">{{display_name}}</span> 
 				<template v-if="changing_name">
-					<p id="change_name" class="control is-grouped">
-						<input v-model="typing_name" class="input" type="text" placeholder="輸入新名稱">
+					<p class="control is-grouped">
+						<input v-el:name_input v-model="typing_name" v-on:keyup.enter="change_name" class="input" type="text" placeholder="輸入新名稱">
 						<a class="button is-info" v-on:click="change_name">
 							確認
 						</a>

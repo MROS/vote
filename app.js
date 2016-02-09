@@ -76,6 +76,7 @@ function client_data(raw_data, that) {
 		id = that.req.user.id;
 	} else if (data.need_name){
 		id = that.session.username;
+		data.username = id;
 	} else if (!data.need_name){
 		id = that.session.who;
 	}
@@ -95,6 +96,7 @@ function client_data(raw_data, that) {
 }
 
 router.get("/data/:index", function *(next) {
+	// 權限管理
 	var raw_data = yield Voting.findOne({index: this.params.index}).exec();
 	console.log(raw_data);
 
@@ -122,6 +124,11 @@ router.get("/poll/:index", function *(next) {
 			});
 		})
 	}
+});
+
+router.post("/change_username/:name", function*(next) {
+	this.session.username = this.params.name;
+	this.status = 200;
 });
 
 router.get("/q/:index", function *(next) {

@@ -47,7 +47,7 @@
 	var Vue = __webpack_require__(1);
 	Vue.use(__webpack_require__(2));
 
-	var get_data = function(long_polling) {
+	var get_data = function(long_polling, once) {
 		return function() {
 			var index = window.location.pathname.substring(3);
 			var url = (long_polling ? '/poll/' : '/data/') + index;
@@ -61,7 +61,9 @@
 					this.need_login = response.data.need_login;
 					this.multi_select = response.data.multi_select;
 					this.username = response.data.need_name ? response.data.username : '';
-					get_data(true).call(this);
+					if (!once) {
+						get_data(true, false).call(this);
+					}
 				},
 				function (response) {
 					console.log("response error");
@@ -101,15 +103,27 @@
 				}
 			}
 		},
-		ready: get_data(false),
+		ready: get_data(false, false),
 		methods: {
 			switch_changing: function() {
 				this.changing_name = !this.changing_name;
+				if (this.changing_name) { 
+					Vue.nextTick(function(){
+						console.log(this.$els)
+						this.$els.name_input.focus();
+					}.bind(this))
+				}
 			},
 			change_name: function() {
 				this.username = this.typing_name;
 				this.typing_name = "";
 				this.changing_name = false;
+				this.$http.post("/change_username/" + this.username).then(
+					function(response){
+						get_data(false, true).call(this);
+					},
+					function(response){}
+				)
 			},
 			select: function(item, event) {
 				var target = null;
