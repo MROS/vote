@@ -57,7 +57,7 @@
 					this.title = response.data.title;
 					this.choices = response.data.choices;
 					this.selected = response.data.selected;
-					this.username = response.data.need_name ? response.data.username : '?';
+					this.username = response.data.need_name ? response.data.username : '';
 					get_data(true).call(this);
 				},
 				function (response) {
@@ -74,10 +74,29 @@
 			choices: [
 			],
 			selected: [],
-			username: '?'
+			username: '',
+			changing_name: false,
+			typing_name: '',
+		},
+		computed: {
+			display_name: function() {
+				if (this.username == '') {
+					return "未命名";
+				} else {
+					return this.username;
+				}
+			}
 		},
 		ready: get_data(false),
 		methods: {
+			switch_changing: function() {
+				this.changing_name = !this.changing_name;
+			},
+			change_name: function() {
+				this.username = this.typing_name;
+				this.typing_name = "";
+				this.changing_name = false;
+			},
 			select: function(item, event) {
 				var target = null;
 				for (i of this.choices) {

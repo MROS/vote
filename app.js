@@ -62,7 +62,7 @@ router.get('/user', function *(next) {
 
 // 問題頁
 
-function client_data(raw_data, username) {
+function client_data(raw_data, that) {
 	var data = {
 		title: raw_data.title,
 		choices: raw_data.choices,
@@ -70,15 +70,23 @@ function client_data(raw_data, username) {
 		need_name: raw_data.need_name,
 		multi_select: raw_data.multi_select
 	};
+
+	var id;
+	if (data.need_login) {
+		id = that.req.user.id;
+	} else if (data.need_name){
+		id = that.session.username;
+	} else if (!data.need_name){
+		id = that.session.who;
+	}
+
 	var selected = [];
-	if (!data.need_name) {
-		for (var c of data.choices) {
-			for (var v in c.voters) {
-				if (c.voters[v].username == username) {
-					selected.push(c.name);
-				}
-				c.voters[v] = "?";
+	for (var c of data.choices) {
+		for (var v in c.voters) {
+			if (c.voters[v].id == id) {
+				selected.push(c.name);
 			}
+			c.voters[v] = c.voters[v].username;
 		}
 	}
 	console.log(selected);
@@ -90,7 +98,7 @@ router.get("/data/:index", function *(next) {
 	var raw_data = yield Voting.findOne({index: this.params.index}).exec();
 	console.log(raw_data);
 
-	var data = client_data(raw_data, this.session.who);
+	var data = client_data(raw_data, this);
 
 	this.body = JSON.stringify(data);
 });
@@ -107,7 +115,7 @@ router.get("/poll/:index", function *(next) {
 					that.status = 404;
 					callback()
 				} else {
-					var data = client_data(response, that.session.who);
+					var data = client_data(response, that);
 					that.body = JSON.stringify(data);
 					callback();
 				}
@@ -127,16 +135,33 @@ router.post("/update/:index", function *(next) {
 	console.log(this.session.who);
 	console.log(this.request.body);
 
+	var raw_data = yield Voting.findOne({index: this.params.index}).exec();
+
+	var to_change = {};
+	if (raw_data.need_login && raw_data.need_name) {
+		to_change.id = this.req.user.id;
+		to_change.username = this.req.user.displayName;
+	} else if (raw_data.need_login && !raw_data.need_name) {
+		to_change.id = this.req.user.id;
+	} else if (!raw_data.need_login && raw_data.need_name) {
+		to_change.id = this.session.username;
+		to_change.username = this.session.username;
+	} else if (!raw_data.need_name && !raw_data.need_name) {
+		to_change.id = this.session.who;
+	}
+
+	console.log(to_change);
+
 	if (this.session.who != null) {
 		var cmd = this.request.body;
 		if (cmd.type == "remove") {
 			console.log("remove");
 			yield Voting.update({"index": this.params.index, "choices.name": cmd.name},
-								{$pull: {"choices.$.voters": {username: this.session.who}}}).exec();
+								{$pull: {"choices.$.voters": to_change}}).exec();
 		} else if (cmd.type == "add") {
 			console.log("add");
 			yield Voting.update({"index": this.params.index, "choices.name": cmd.name},
-								{$addToSet: {"choices.$.voters": {username: this.session.who}}}).exec();
+								{$addToSet: {"choices.$.voters": to_change}}).exec();
 		}
 		console.log("emit update");
 		emitter.emit('update-' + this.params.index);

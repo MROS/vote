@@ -10,6 +10,32 @@ html {
 	margin-bottom: 80px;
 }
 
+#setting {
+	width: 500px;
+	margin: 0px auto;
+}
+
+#setting p {
+	font-size: 14px;
+	line-height: 2em;
+}
+
+#setting .button {
+}
+
+.changed_data {
+	color: #222222;
+	font-weight: bold;
+}
+
+#new_name {
+	width: 300px;
+}
+
+#change_name {
+	margin-top: 20px;
+}
+
 #choices {
 	width: 500px;
 	margin: 0px auto;

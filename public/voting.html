@@ -9,6 +9,30 @@
 <body>
 	<div id="voting">
 		<h1 class="title is-2">{{title}}</h1>
+
+		<div id="setting">
+			<p>
+				#不匿名 #需登入 #複選
+			</p>
+			<p>
+				使用者名稱為 &nbsp;&nbsp;&nbsp; <span class="changed_data">{{display_name}}</span> 
+				<template v-if="changing_name">
+					<p id="change_name" class="control is-grouped">
+						<input v-model="typing_name" class="input" type="text" placeholder="輸入新名稱">
+						<a class="button is-info" v-on:click="change_name">
+							確認
+						</a>
+						<a class="button is-danger" v-on:click="switch_changing">
+							取消
+						</a>
+					</p>
+				</template>
+				<template v-else>
+					<a class="button is-info is-small" v-on:click="switch_changing">修改</a>
+				</template>
+			</p>
+		</div>
+
 		<div id="choices">
 			<table class="table">
 				<thead>
