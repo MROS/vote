@@ -47,6 +47,26 @@
 	var Vue = __webpack_require__(1);
 	Vue.use(__webpack_require__(2));
 
+	var get_data = function(long_polling) {
+		return function() {
+			var index = window.location.pathname.substring(3);
+			var url = (long_polling ? '/poll/' : '/data/') + index;
+			this.$http.get(url).then(
+				function (response) {
+					console.log(response);
+					this.title = response.data.title;
+					this.choices = response.data.choices;
+					this.selected = response.data.selected;
+					this.username = response.data.need_name ? response.data.username : '?';
+					get_data(true).call(this);
+				},
+				function (response) {
+					console.log("response error");
+				}
+			);
+		};
+	}
+
 	var vm = new Vue({
 		el: '#voting',
 		data: {
@@ -56,21 +76,7 @@
 			selected: [],
 			username: '?'
 		},
-		ready: function() {
-			var index = window.location.pathname.substring(3);
-			this.$http.get('/data/' + index).then(
-				function (response) {
-					console.log(response);
-					this.title = response.data.title;
-					this.choices = response.data.choices;
-					this.selected = response.data.selected;
-					this.username = response.data.need_name ? response.data.username : '?';
-				},
-				function (response) {
-					console.log("response error");
-				}
-			);
-		},
+		ready: get_data(false),
 		methods: {
 			select: function(item, event) {
 				var target = null;

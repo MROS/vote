@@ -24,7 +24,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 var events = require('events');
-var emmiter = new events.EventEmitter();
+var emitter = new events.EventEmitter();
 
 // 創建頁
 
@@ -95,6 +95,27 @@ router.get("/data/:index", function *(next) {
 	this.body = JSON.stringify(data);
 });
 
+router.get("/poll/:index", function *(next) {
+	var that = this;
+	yield function(callback) {
+		emitter.once('update-' + that.params.index, function () {
+			console.log("update it");
+			console.log(that.params.index);
+			Voting.findOne({index: that.params.index}, function(err, response) {
+				if (response == null) {
+					console.log("when poll: no this quesstion");
+					that.status = 404;
+					callback()
+				} else {
+					var data = client_data(response, that.session.who);
+					that.body = JSON.stringify(data);
+					callback();
+				}
+			});
+		})
+	}
+});
+
 router.get("/q/:index", function *(next) {
 	if (this.session.who == null) {
 		this.session.who = random_url();
@@ -117,7 +138,8 @@ router.post("/update/:index", function *(next) {
 			yield Voting.update({"index": this.params.index, "choices.name": cmd.name},
 								{$addToSet: {"choices.$.voters": {username: this.session.who}}}).exec();
 		}
-		emmiter.emit('update');
+		console.log("emit update");
+		emitter.emit('update-' + this.params.index);
 	} else {
 		console.log("update but no session");
 		this.status = 401;
