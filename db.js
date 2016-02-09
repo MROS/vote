@@ -10,7 +10,7 @@ var Voting = mongoose.model(
 		need_name: Boolean,
 		need_login: Boolean,
 		choices: [
-			{name: String, voters: [{user: String, id: String}]}
+			{name: String, voters: [{username: String, id: String}]}
 		]
 	}
 );

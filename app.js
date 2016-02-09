@@ -62,9 +62,36 @@ router.get('/user', function *(next) {
 
 // 問題頁
 
+function client_data(raw_data, username) {
+	var data = {
+		title: raw_data.title,
+		choices: raw_data.choices,
+		need_login: raw_data.need_login,
+		need_name: raw_data.need_name,
+		multi_select: raw_data.multi_select
+	};
+	var selected = [];
+	if (!data.need_name) {
+		for (var c of data.choices) {
+			for (var v in c.voters) {
+				if (c.voters[v].username == username) {
+					selected.push(c.name);
+				}
+				c.voters[v] = "?";
+			}
+		}
+	}
+	console.log(selected);
+	data.selected = selected;
+	return data;
+}
+
 router.get("/data/:index", function *(next) {
-	var data = yield Voting.findOne({index: this.params.index}).exec();
-	console.log(data);
+	var raw_data = yield Voting.findOne({index: this.params.index}).exec();
+	console.log(raw_data);
+
+	var data = client_data(raw_data, this.session.who);
+
 	this.body = JSON.stringify(data);
 });
 
@@ -75,8 +102,27 @@ router.get("/q/:index", function *(next) {
 	this.body = yield fs.readFile('public/voting.html', 'utf8');
 });
 
-router.post("update/:index", function *(next) {
-	
+router.post("/update/:index", function *(next) {
+	console.log(this.session.who);
+	console.log(this.request.body);
+
+	if (this.session.who != null) {
+		var cmd = this.request.body;
+		if (cmd.type == "remove") {
+			console.log("remove");
+			yield Voting.update({"index": this.params.index, "choices.name": cmd.name},
+								{$pull: {"choices.$.voters": {username: this.session.who}}}).exec();
+		} else if (cmd.type == "add") {
+			console.log("add");
+			yield Voting.update({"index": this.params.index, "choices.name": cmd.name},
+								{$addToSet: {"choices.$.voters": {username: this.session.who}}}).exec();
+		}
+		emmiter.emit('update');
+	} else {
+		console.log("update but no session");
+		this.status = 401;
+	}
+	this.body = "ok"
 });
 
 

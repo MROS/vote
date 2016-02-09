@@ -47,13 +47,14 @@
 	var Vue = __webpack_require__(1);
 	Vue.use(__webpack_require__(2));
 
-	new Vue({
+	var vm = new Vue({
 		el: '#voting',
 		data: {
 			title: '',
 			choices: [
 			],
-			selected: []
+			selected: [],
+			username: '?'
 		},
 		ready: function() {
 			var index = window.location.pathname.substring(3);
@@ -62,6 +63,8 @@
 					console.log(response);
 					this.title = response.data.title;
 					this.choices = response.data.choices;
+					this.selected = response.data.selected;
+					this.username = response.data.need_name ? response.data.username : '?';
 				},
 				function (response) {
 					console.log("response error");
@@ -77,25 +80,29 @@
 					}
 				}
 				if (target != null) {
-					console.log(event);
+					console.log(this.selected)
 					var id = this.selected.indexOf(target.name);
+					var data;
 					if (id >= 0) { // indexOf在找不到目標時回傳-1
-						target.voters.splice("kk", 1);
+						target.voters.splice(this.username, 1);
+
+						data = JSON.stringify({type: "remove", name: target.name})
 					} else {
-						target.voters.push("kk");
+						target.voters.push(this.username);
+
+						data = JSON.stringify({type: "add", name: target.name})
 					}
+
+					var index = window.location.pathname.substring(3);
+					this.$http.post('/update/' + index, data).then(
+						function (response) {
+							console.log("update successfully");
+						},
+						function (response) {
+							console.log("update error");
+						}
+					);
 				}
-				var index = window.location.pathname.substring(3);
-				this.$http.post('/update/' + index, JSON.stringify(selected)).then(
-					function (response) {
-						console.log(response);
-						this.title = response.data.title;
-						this.choices = response.data.choices;
-					},
-					function (response) {
-						console.log("response error");
-					}
-				);
 			}
 		}
 	})

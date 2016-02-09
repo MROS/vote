@@ -20,6 +20,7 @@ passport.use(
 		callbackURL: 'http://localhost:' + config.port + '/auth/facebook/callback'
 	},
 	function(token, tokenSecret, profile, done) {
+		console.log(profile)
 		var user = {id: profile.id, name: profile.displayName}
 		User.findOne(user, function(err, found_user) {
 			if (found_user == null) {
