@@ -75,9 +75,9 @@
 
 				data = {
 					title: this.title,
-					multi_select: this.multi_select == "複選" ? true: false,
-					need_name: this.need_name == "yes" ? true: false,
-					need_login: this.need_login == "yes" ? true: false,
+					multi_select: this.multi_select == "複選" ? true : false,
+					need_name: this.need_name == "yes" ? true : false,
+					need_login: this.need_login == "yes" ? true : false,
 					choices: this.choices
 				};
 				console.log(JSON.stringify(data))

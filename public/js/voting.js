@@ -7,10 +7,13 @@ var get_data = function(long_polling) {
 		var url = (long_polling ? '/poll/' : '/data/') + index;
 		this.$http.get(url).then(
 			function (response) {
-				console.log(response);
+				console.log(response.data);
 				this.title = response.data.title;
 				this.choices = response.data.choices;
 				this.selected = response.data.selected;
+				this.need_name = response.data.need_name;
+				this.need_login = response.data.need_login;
+				this.multi_select = response.data.multi_select;
 				this.username = response.data.need_name ? response.data.username : '';
 				get_data(true).call(this);
 			},
@@ -31,8 +34,19 @@ var vm = new Vue({
 		username: '',
 		changing_name: false,
 		typing_name: '',
+		multi_select: null,
+		need_name: null,
+		need_login: null,
 	},
 	computed: {
+		about_setting: function() {
+			var str = ""
+			console.log(this.multi_select)
+			str += (this.need_name ? '#記名' : '#匿名 ')
+			str += (this.need_login ? '#需登入 ' : '#不需登入 ')
+			str += (this.multi_select ? '#複選' : '#單選')
+			return str;
+		},
 		display_name: function() {
 			if (this.username == '') {
 				return "未命名";
