@@ -27,7 +27,10 @@ module.exports = {
 	clientID: 'xxxxxxxxxxxxxx',
 	clientSecret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxx',
 
-	// 與位置相關
+	// 專案的根目錄，定位用
+	project_root: 'xxxxxxxx'
+
+	// 與網路位置相關
 	host: 'xxx',
 	port: xxxx
 }
