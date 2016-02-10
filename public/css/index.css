@@ -19,3 +19,11 @@
 #sign-out {
 	margin-left: 10px;
 }
+
+.no_display {
+	display: none;
+}
+
+.make_display {
+	display: block;
+}

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>投票</title>
-	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdn.rawgit.com/jgthms/bulma/master/css/bulma.min.css">
 	<link rel="stylesheet" href="css/index.css">
 </head>
@@ -61,7 +61,7 @@
 					記名
 				</label>
 			</p>
-			<div v-if="alert" class="notification is-danger">
+			<div v-if="alert" v-bind:class="{'make_display': alert}" class="no_display notification is-danger">
 				<button class="delete" v-on:click="hide_alert"></button>
 				資料尚未填寫完畢喔！
 			</div>

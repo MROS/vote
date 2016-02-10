@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title></title>
-	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdn.rawgit.com/jgthms/bulma/master/css/bulma.min.css">
 	<link rel="stylesheet" href="/css/voting.css">
 </head>
@@ -16,7 +16,7 @@
 
 		<div id="setting">
 
-			<div v-if="need_login && !is_login" class="notification is-danger">
+			<div v-if="show_warning" v-bind:class="{'make_display': show_warning}" class="no_display notification is-danger">
 				本投票需要登入後才可觀看與投票
 			</div>
 

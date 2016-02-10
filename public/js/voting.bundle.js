@@ -114,6 +114,9 @@
 					return true;
 				}
 				return false;
+			},
+			show_warning: function() {
+				return this.need_login && !this.is_login
 			}
 		},
 		ready: get_data(false, false),
