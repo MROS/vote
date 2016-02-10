@@ -1,6 +1,6 @@
 # 宇宙公投
 
-可到[宇宙公投](voting.csie.org)看demo
+可到[宇宙公投](http://voting.csie.org)看demo
 
 ## 概述
 
