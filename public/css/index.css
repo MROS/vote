@@ -27,3 +27,7 @@
 .make_display {
 	display: block;
 }
+
+.make_display_inline_block {
+	display: inline-block;
+}

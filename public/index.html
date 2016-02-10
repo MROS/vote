@@ -28,7 +28,7 @@
 			<ul>
 				<li v-for="choice in choices">
 					<!-- 爛招... -->
-					<span v-bind:class="{'make_display': loaded}" class="no_display tag is-success is-medium">
+					<span v-bind:class="{'make_display_inline_block': is_loaded}" class="no_display tag is-success is-medium">
 						{{ choice }}
 						<button class="delete" v-on:click="remove($index)"></button>
 					</span>
