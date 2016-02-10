@@ -14,21 +14,23 @@
 			<p>
 				{{about_setting}}
 			</p>
-			<p>
+			<p v-if="need_name">
 				使用者名稱為 &nbsp;&nbsp;&nbsp; <span class="changed_data">{{display_name}}</span> 
-				<template v-if="show_input">
-					<p class="control is-grouped">
-						<input v-el:name_input v-model="typing_name" v-on:keyup.enter="change_name" class="input" type="text" placeholder="輸入新名稱">
-						<a class="button is-info" v-on:click="change_name">
-							確認
-						</a>
-						<a class="button is-danger" v-on:click="turn_off_changing">
-							取消
-						</a>
-					</p>
-				</template>
-				<template v-else>
-					<a class="button is-info is-small" v-on:click="turn_on_changing">修改</a>
+				<template v-if="!need_login">
+					<template v-if="show_input">
+						<p class="control is-grouped">
+							<input v-el:name_input v-model="typing_name" v-on:keyup.enter="change_name" class="input" type="text" placeholder="輸入新名稱">
+							<a class="button is-info" v-on:click="change_name">
+								確認
+							</a>
+							<a class="button is-danger" v-on:click="turn_off_changing">
+								取消
+							</a>
+						</p>
+					</template>
+					<template v-else>
+						<a class="button is-info is-small" v-on:click="turn_on_changing">修改</a>
+					</template>
 				</template>
 			</p>
 		</div>
@@ -39,6 +41,7 @@
 					<tr>
 						<th>選項</th>
 						<th>票數</th>
+						<th v-if="need_name">投票者</th>
 					</tr>
 				</thead>
 				<tbody v-for="choice in choices">
@@ -50,6 +53,7 @@
 							</label>
 						</th>
 						<th>{{choice.voters.length}}</th>
+						<th v-if="need_name">{{choice.voters}}</th>
 					</tr>
 				</tbody>
 			</table>

@@ -88,7 +88,7 @@ var vm = new Vue({
 			)
 		},
 		select: function(item, event) {
-			if (this.username == null || this.username == "") {
+			if (this.need_name && (this.username == null || this.username == "")) {
 				event.preventDefault();
 				return;
 			}
