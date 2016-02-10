@@ -27,7 +27,8 @@
 			</p>
 			<ul>
 				<li v-for="choice in choices">
-					<span class="tag is-success is-medium">
+					<!-- 爛招... -->
+					<span v-bind:class="{'make_display': loaded}" class="no_display tag is-success is-medium">
 						{{ choice }}
 						<button class="delete" v-on:click="remove($index)"></button>
 					</span>

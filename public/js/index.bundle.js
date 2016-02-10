@@ -62,6 +62,7 @@
 			need_login: '',
 			alert: false,
 			is_login: false,
+			is_loaded: true
 		},
 		ready: function(){
 			this.$http.get('/is_auth').then(
