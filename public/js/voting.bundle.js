@@ -46,6 +46,13 @@
 
 	var Vue = __webpack_require__(1);
 	Vue.use(__webpack_require__(2));
+	var header = __webpack_require__(3).header;
+
+	Vue.component('my-header', header);
+
+	new Vue({
+		el: '#header'
+	})
 
 	var get_data = function(long_polling, once) {
 		return function() {
@@ -90,7 +97,7 @@
 			about_setting: function() {
 				var str = ""
 				console.log(this.multi_select)
-				str += (this.need_name ? '#記名' : '#匿名 ')
+				str += (this.need_name ? '#記名 ' : '#匿名 ')
 				str += (this.need_login ? '#需登入 ' : '#不需登入 ')
 				str += (this.multi_select ? '#複選' : '#單選')
 				return str;
@@ -11460,6 +11467,42 @@
 	/******/ ])
 	});
 	;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Vue = __webpack_require__(1);
+
+	var header = Vue.extend({
+		props: ['is_login'],
+		template: `
+		<header class="header">
+			<div class="container">
+				<!-- Left side -->
+				<div class="header-left">
+					<a class="header-item" href="/">
+						投票
+					</a>
+				</div>
+				<div class="header-right header-menu">
+					<span class="header-item">
+						<template v-if="is_login">
+						</template>
+						<template v-else>
+							<a class="button" href="/auth/facebook"><span class="icon"><i class="fa fa-facebook-official"></i></span> 登入</a>
+						</template>
+					</span>
+				</div>
+			</div>
+		</header>
+		`
+	})
+
+	module.exports = {
+		header: header
+	}
+
 
 /***/ }
 /******/ ]);

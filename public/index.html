@@ -3,11 +3,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>投票</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdn.rawgit.com/jgthms/bulma/master/css/bulma.min.css">
 	<link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 	<div id="main">
+
+		<div id="my-header">
+			<my-header :is_login="is_login"></my-header>
+		</div>
+
 		<h1 class="title is-2">開始建立您的票選活動</h1>
 		<div id="setting">
 			<p class="control">

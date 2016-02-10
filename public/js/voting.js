@@ -1,5 +1,12 @@
 var Vue = require('../bower_components/vue/dist/vue.js');
 Vue.use(require('../bower_components/vue-resource/dist/vue-resource.js'));
+var header = require('./header.js').header;
+
+Vue.component('my-header', header);
+
+new Vue({
+	el: '#header'
+})
 
 var get_data = function(long_polling, once) {
 	return function() {
@@ -44,7 +51,7 @@ var vm = new Vue({
 		about_setting: function() {
 			var str = ""
 			console.log(this.multi_select)
-			str += (this.need_name ? '#記名' : '#匿名 ')
+			str += (this.need_name ? '#記名 ' : '#匿名 ')
 			str += (this.need_login ? '#需登入 ' : '#不需登入 ')
 			str += (this.multi_select ? '#複選' : '#單選')
 			return str;

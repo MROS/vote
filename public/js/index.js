@@ -1,8 +1,11 @@
 var Vue = require('../bower_components/vue/dist/vue.js');
 Vue.use(require('../bower_components/vue-resource/dist/vue-resource.js'));
+var header = require('./header.js').header;
+
+Vue.component('my-header', header)
 
 new Vue({
-	el: '#setting',
+	el: '#main',
 	data: {
 		title: '',
 		new_choice: '',
@@ -10,7 +13,8 @@ new Vue({
 		multi_select: '',
 		need_name: '',
 		need_login: '',
-		alert: false
+		alert: false,
+		is_login: false,
 	},
 	methods: {
 		submit: function () {
@@ -44,6 +48,7 @@ new Vue({
 			);
 		},
 		add: function() {
+			console.log(this.$children)
 			this.choices.push(this.new_choice);
 			this.new_choice = '';
 		},
