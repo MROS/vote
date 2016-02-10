@@ -168,7 +168,7 @@ router.get("/q/:index", function *(next) {
 	if (this.session.who == null) {
 		this.session.who = random_url();
 	}
-	this.body = yield fs.readFile('public/voting.html', 'utf8');
+	this.body = yield fs.readFile(config.project_root + 'public/voting.html', 'utf8');
 });
 
 router.post("/update/:index", function *(next) {
