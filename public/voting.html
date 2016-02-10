@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title></title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdn.rawgit.com/jgthms/bulma/master/css/bulma.min.css">
 	<link rel="stylesheet" href="/css/voting.css">
 </head>
@@ -15,6 +15,11 @@
 		<h1 class="title is-2">{{title}}</h1>
 
 		<div id="setting">
+
+			<div v-if="need_login && !is_login" class="notification is-danger">
+				本投票需要登入後才可觀看與投票
+			</div>
+
 			<p>
 				{{about_setting}}
 			</p>
