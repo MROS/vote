@@ -1,4 +1,6 @@
-# *待取名*
+# 宇宙公投
+
+可到[宇宙公投](voting.csie.org)看demo
 
 ## 概述
 
@@ -10,6 +12,12 @@
 
 先確認是否安裝nodejs及mongodb
 
+再安裝所需套件
+
+```
+npm install
+```
+
 在本專案根目錄創建檔案config.js
 並設定幾個變數
 
@@ -18,6 +26,9 @@ module.exports = {
 	// 與facebook登入相關
 	clientID: 'xxxxxxxxxxxxxx',
 	clientSecret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxx',
+
+	// 與位置相關
+	host: 'xxx',
 	port: xxxx
 }
 ```

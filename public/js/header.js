@@ -7,8 +7,11 @@ var header = Vue.extend({
 		<div class="container">
 			<!-- Left side -->
 			<div class="header-left">
+				<a id="website_name" class="header-item" href="#">
+					宇宙公投
+				</a>
 				<a class="header-item" href="/">
-					投票
+					新票選
 				</a>
 			</div>
 			<div class="header-right header-menu">
