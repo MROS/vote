@@ -2,10 +2,10 @@ html {
 	background-color: #ffffff;
 }
 #voting {
-	margin-top: 20px;
 	width: 100%;
 }
 #voting h1 {
+	margin-top: 20px;
 	text-align: center;
 	margin-bottom: 80px;
 }
@@ -40,4 +40,8 @@ html {
 	width: 500px;
 	margin: 0px auto;
 	margin-top: 20px;
+}
+
+#sign-out {
+	margin-left: 10px;
 }

@@ -8,10 +8,10 @@
 	<link rel="stylesheet" href="/css/voting.css">
 </head>
 <body>
-	<div id="header">
-		<my-header></my-header>
-	</div>
 	<div id="voting">
+
+		<my-header :is_login="is_login" :username="fb_name"></my-header>
+
 		<h1 class="title is-2">{{title}}</h1>
 
 		<div id="setting">

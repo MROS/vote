@@ -50,10 +50,6 @@
 
 	Vue.component('my-header', header);
 
-	new Vue({
-		el: '#header'
-	})
-
 	var get_data = function(long_polling, once) {
 		return function() {
 			var index = window.location.pathname.substring(3);
@@ -66,8 +62,10 @@
 					this.selected = response.data.selected;
 					this.need_name = response.data.need_name;
 					this.need_login = response.data.need_login;
+					this.is_login = response.data.is_login;
 					this.multi_select = response.data.multi_select;
 					this.username = response.data.need_name ? response.data.username : '';
+					this.fb_name = response.data.fb_name;
 					if (!once) {
 						get_data(true, false).call(this);
 					}
@@ -92,6 +90,8 @@
 			multi_select: null,
 			need_name: null,
 			need_login: null,
+			is_login: true,
+			fb_name: ''
 		},
 		computed: {
 			about_setting: function() {
@@ -11475,7 +11475,7 @@
 	var Vue = __webpack_require__(1);
 
 	var header = Vue.extend({
-		props: ['is_login'],
+		props: ['is_login', 'username'],
 		template: `
 		<header class="header">
 			<div class="container">
@@ -11488,15 +11488,25 @@
 				<div class="header-right header-menu">
 					<span class="header-item">
 						<template v-if="is_login">
+							{{username}}
+							<a id="sign-out" class="button" href="/logout">
+								<span class="icon"><i class="fa fa-sign-out"></i></span>
+							</a>
 						</template>
 						<template v-else>
-							<a class="button" href="/auth/facebook"><span class="icon"><i class="fa fa-facebook-official"></i></span> 登入</a>
+							<a v-on:click="store_path" class="button" href="/auth/facebook"><span class="icon"><i class="fa fa-facebook-official"></i></span> 登入</a>
 						</template>
 					</span>
 				</div>
 			</div>
 		</header>
-		`
+		`,
+		methods: {
+			store_path: function() {
+				console.log("save")
+				localStorage.setItem("last_path", window.location.pathname);
+			}
+		}
 	})
 
 	module.exports = {

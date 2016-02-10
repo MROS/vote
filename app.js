@@ -50,11 +50,29 @@ router.get('/auth/facebook/callback',
 		  passport.authenticate(
 			  'facebook',
 			  {
-				  successRedirect: '/user',
+				  successRedirect: '/redirect',
 				  failureRedirect: '/'
 			  }
 		  )
 );
+
+router.get('/logout', function *(next) {
+	this.req.logout()
+	this.redirect('/')
+})
+
+router.get('/is_auth', function *(next) {
+	if (this.req.user == null) {
+		this.body = {res: false}
+	} else {
+		console.log(this.req.user)
+		this.body = {res: true, name: this.req.user.name}
+	}
+})
+
+router.get('/redirect', function *(next) {
+	this.body = yield fs.readFile('public/redirect.html', 'utf8');
+})
 
 router.get('/user', function *(next) {
 	this.body = this.req.user;
@@ -64,12 +82,24 @@ router.get('/user', function *(next) {
 
 function client_data(raw_data, that) {
 	var data = {
-		title: raw_data.title,
-		choices: raw_data.choices,
 		need_login: raw_data.need_login,
+		is_login: that.req.user == null ? false : true,
+		fb_name: that.req.user == null ? '' : that.req.user.name,
+
+		title: raw_data.title,
 		need_name: raw_data.need_name,
 		multi_select: raw_data.multi_select
 	};
+
+	console.log(data.is_login)
+	console.log("fb_name" + data.fb_name)
+
+	if (data.need_login && !data.is_login) {
+		return data;
+	} 
+
+	// 權限正常，則繼續
+	data.choices = raw_data.choices;
 
 	var id;
 	if (data.need_login) {

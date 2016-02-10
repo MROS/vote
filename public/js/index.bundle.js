@@ -54,6 +54,7 @@
 		el: '#main',
 		data: {
 			title: '',
+			username: '',
 			new_choice: '',
 			choices: [],
 			multi_select: '',
@@ -61,6 +62,21 @@
 			need_login: '',
 			alert: false,
 			is_login: false,
+		},
+		ready: function(){
+			this.$http.get('/is_auth').then(
+				function (response) {
+					if (response.data.res == false) {
+						this.is_login = false;
+					} else {
+						this.is_login = true;
+						this.username = response.data.name;
+					}
+				},
+				function (response) {
+					console.log("response error");
+				}
+			);
 		},
 		methods: {
 			submit: function () {
@@ -11403,7 +11419,7 @@
 	var Vue = __webpack_require__(1);
 
 	var header = Vue.extend({
-		props: ['is_login'],
+		props: ['is_login', 'username'],
 		template: `
 		<header class="header">
 			<div class="container">
@@ -11416,15 +11432,25 @@
 				<div class="header-right header-menu">
 					<span class="header-item">
 						<template v-if="is_login">
+							{{username}}
+							<a id="sign-out" class="button" href="/logout">
+								<span class="icon"><i class="fa fa-sign-out"></i></span>
+							</a>
 						</template>
 						<template v-else>
-							<a class="button" href="/auth/facebook"><span class="icon"><i class="fa fa-facebook-official"></i></span> 登入</a>
+							<a v-on:click="store_path" class="button" href="/auth/facebook"><span class="icon"><i class="fa fa-facebook-official"></i></span> 登入</a>
 						</template>
 					</span>
 				</div>
 			</div>
 		</header>
-		`
+		`,
+		methods: {
+			store_path: function() {
+				console.log("save")
+				localStorage.setItem("last_path", window.location.pathname);
+			}
+		}
 	})
 
 	module.exports = {

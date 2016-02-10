@@ -8,6 +8,7 @@ new Vue({
 	el: '#main',
 	data: {
 		title: '',
+		username: '',
 		new_choice: '',
 		choices: [],
 		multi_select: '',
@@ -15,6 +16,21 @@ new Vue({
 		need_login: '',
 		alert: false,
 		is_login: false,
+	},
+	ready: function(){
+		this.$http.get('/is_auth').then(
+			function (response) {
+				if (response.data.res == false) {
+					this.is_login = false;
+				} else {
+					this.is_login = true;
+					this.username = response.data.name;
+				}
+			},
+			function (response) {
+				console.log("response error");
+			}
+		);
 	},
 	methods: {
 		submit: function () {

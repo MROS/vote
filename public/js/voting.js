@@ -4,10 +4,6 @@ var header = require('./header.js').header;
 
 Vue.component('my-header', header);
 
-new Vue({
-	el: '#header'
-})
-
 var get_data = function(long_polling, once) {
 	return function() {
 		var index = window.location.pathname.substring(3);
@@ -20,8 +16,10 @@ var get_data = function(long_polling, once) {
 				this.selected = response.data.selected;
 				this.need_name = response.data.need_name;
 				this.need_login = response.data.need_login;
+				this.is_login = response.data.is_login;
 				this.multi_select = response.data.multi_select;
 				this.username = response.data.need_name ? response.data.username : '';
+				this.fb_name = response.data.fb_name;
 				if (!once) {
 					get_data(true, false).call(this);
 				}
@@ -46,6 +44,8 @@ var vm = new Vue({
 		multi_select: null,
 		need_name: null,
 		need_login: null,
+		is_login: true,
+		fb_name: ''
 	},
 	computed: {
 		about_setting: function() {
