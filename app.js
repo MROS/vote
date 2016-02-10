@@ -71,7 +71,7 @@ router.get('/is_auth', function *(next) {
 })
 
 router.get('/redirect', function *(next) {
-	this.body = yield fs.readFile('public/redirect.html', 'utf8');
+	this.body = yield fs.readFile(config.project_root + 'public/redirect.html', 'utf8');
 })
 
 router.get('/user', function *(next) {
