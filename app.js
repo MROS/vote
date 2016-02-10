@@ -6,7 +6,7 @@ var app = koa();
 var serve = require('koa-static');
 var logger = require('koa-logger');
 var bodyParser = require('koa-bodyparser')();
-app.use(serve('public'));
+app.use(serve(config.project_root + './public'));
 app.use(logger());
 app.use(bodyParser);
 

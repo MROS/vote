@@ -11432,6 +11432,9 @@
 					<a class="header-item" href="/">
 						新票選
 					</a>
+					<a class="header-item" target="_blank" href="https://github.com/MROS/vote">
+						源碼
+					</a>
 				</div>
 				<div class="header-right header-menu">
 					<span class="header-item">
