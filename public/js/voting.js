@@ -50,25 +50,33 @@ var vm = new Vue({
 			return str;
 		},
 		display_name: function() {
-			if (this.username == '') {
+			if (this.username == null || this.username == '') {
 				return "未命名";
 			} else {
 				return this.username;
 			}
+		},
+		show_input: function() {
+			if (this.changing_name == true || this.username == null || this.username == '') {
+				return true;
+			}
+			return false;
 		}
 	},
 	ready: get_data(false, false),
 	methods: {
-		switch_changing: function() {
-			this.changing_name = !this.changing_name;
-			if (this.changing_name) { 
-				Vue.nextTick(function(){
-					console.log(this.$els)
-					this.$els.name_input.focus();
-				}.bind(this))
-			}
+		turn_on_changing: function() {
+			this.changing_name = true;
+			Vue.nextTick(function(){
+				console.log(this.$els)
+				this.$els.name_input.focus();
+			}.bind(this))
+		},
+		turn_off_changing: function() {
+			this.changing_name = false;
 		},
 		change_name: function() {
+			if (this.typing_name == "") {return;}
 			this.username = this.typing_name;
 			this.typing_name = "";
 			this.changing_name = false;
@@ -80,6 +88,10 @@ var vm = new Vue({
 			)
 		},
 		select: function(item, event) {
+			if (this.username == null || this.username == "") {
+				event.preventDefault();
+				return;
+			}
 			var target = null;
 			for (i of this.choices) {
 				if (i.name == item) {
