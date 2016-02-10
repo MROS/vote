@@ -18,8 +18,8 @@ var get_data = function(long_polling, once) {
 				this.need_login = response.data.need_login;
 				this.is_login = response.data.is_login;
 				this.multi_select = response.data.multi_select;
-				this.username = response.data.need_name ? response.data.username : '';
 				this.fb_name = response.data.fb_name;
+				this.username = response.data.need_name ? response.data.username : '';
 				if (!once) {
 					get_data(true, false).call(this);
 				}

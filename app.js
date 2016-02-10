@@ -102,12 +102,15 @@ function client_data(raw_data, that) {
 	data.choices = raw_data.choices;
 
 	var id;
-	if (data.need_login) {
+	if (data.need_login && !data.need_name) {
 		id = that.req.user.id;
-	} else if (data.need_name){
+	} else if (data.need_login && data.need_name){
+		id = that.req.user.id;
+		data.username = data.fb_name;
+	} else if (!data.need_login && data.need_name){
 		id = that.session.username;
 		data.username = id;
-	} else if (!data.need_name){
+	} else if (!data.need_login && !data.need_name){
 		id = that.session.who;
 	}
 
@@ -169,15 +172,12 @@ router.get("/q/:index", function *(next) {
 });
 
 router.post("/update/:index", function *(next) {
-	console.log(this.session.who);
-	console.log(this.request.body);
-
 	var raw_data = yield Voting.findOne({index: this.params.index}).exec();
 
 	var to_change = {};
 	if (raw_data.need_login && raw_data.need_name) {
 		to_change.id = this.req.user.id;
-		to_change.username = this.req.user.displayName;
+		to_change.username = this.req.user.name;
 	} else if (raw_data.need_login && !raw_data.need_name) {
 		to_change.id = this.req.user.id;
 	} else if (!raw_data.need_login && raw_data.need_name) {
