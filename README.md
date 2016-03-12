@@ -32,7 +32,8 @@ module.exports = {
 
 	// 與網路位置相關
 	host: 'xxx',
-	port: xxxx
+	port: xxx,                 // 真正跑在電腦上的port
+	proxy_port: xxx,             // 外部所能接觸的port，會反向代理給上面那個port，若無反向代理，填一樣就好
 }
 ```
 
