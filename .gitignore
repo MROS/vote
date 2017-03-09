@@ -1,7 +1,8 @@
-# vim
+# editor
 
 *.swo
 *.swp
+.vscode/
 
 # node
 
