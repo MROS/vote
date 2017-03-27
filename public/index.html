@@ -14,7 +14,7 @@
 </head>
 <body>
 	<div id="main">
-
+		
 		<div id="my-header">
 			<my-header :is_login="is_login" :username="username"></my-header>
 		</div>
@@ -32,7 +32,7 @@
 			</p>
 			<ul>
 				<li v-for="choice in choices">
-					<!-- 爛招... -->
+					<!-- 爛招...乃為防止此段未被vue解析到之前被瀏覽器顯示出（時間很短，但可能會照成閃動） -->
 					<span v-bind:class="{'make_display_inline_block': is_loaded}" class="no_display tag is-success is-medium">
 						{{ choice }}
 						<button class="delete" v-on:click="remove($index)"></button>

@@ -79,7 +79,7 @@ var vm = new Vue({
 			this.changing_name = true;
 			Vue.nextTick(function(){
 				console.log(this.$els)
-				this.$els.name_input.focus();
+				this.$els.name_input.focus(); // TODO: 升級vue.js 2時將$els改為$refs
 			}.bind(this))
 		},
 		turn_off_changing: function() {
