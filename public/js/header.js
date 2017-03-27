@@ -1,4 +1,4 @@
-var Vue = require('../bower_components/vue/dist/vue.js');
+var Vue = require('vue');
 
 var header = Vue.extend({
 	props: ['is_login', 'username'],

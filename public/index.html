@@ -7,7 +7,7 @@
 	<meta property="og:description" content="宇宙公投，一個線上投票工具">
 	
 	<title>宇宙公投</title>
-	<link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://npmcdn.com/bulma@0.0.4/css/bulma.min.css">
 	<link rel="stylesheet" href="/css/index.css">
 	<link rel="stylesheet" href="/css/header.css">
@@ -31,18 +31,18 @@
 				</a>
 			</p>
 			<ul>
-				<li v-for="choice in choices">
+				<li v-for="(choice, index) in choices">
 					<!-- 爛招...乃為防止此段未被vue解析到之前被瀏覽器顯示出（時間很短，但可能會照成閃動） -->
 					<span v-bind:class="{'make_display_inline_block': is_loaded}" class="no_display tag is-success is-medium">
 						{{ choice }}
-						<button class="delete" v-on:click="remove($index)"></button>
+						<button class="delete" v-on:click="remove(index)"></button>
 					</span>
 				</li>
 			</ul>
 			<p class="control">
 				<span class="select">
 					<select v-model="multi_select">
-						<option selected>複選</option>
+						<option>複選</option>
 						<!-- <option>單選</option> -->
 					</select>
 				</span>
@@ -77,6 +77,6 @@
 			</p>
 		</div>
 	</div>
-	<script type="text/javascript" src="js/index.bundle.js"></script>
+	<script type="text/javascript" src="build/index.bundle.js"></script>
 </body>
 </html>

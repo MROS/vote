@@ -7,7 +7,7 @@
 	<meta property="og:description" content="宇宙公投，一個線上投票工具">
 
 	<title>宇宙公投</title>
-	<link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://npmcdn.com/bulma@0.0.4/css/bulma.min.css">
 	<link rel="stylesheet" href="/css/voting.css">
 	<link rel="stylesheet" href="/css/header.css">
@@ -33,7 +33,7 @@
 				<template v-if="!need_login">
 					<template v-if="show_input">
 						<p class="control is-grouped">
-							<input v-el:name_input v-model="typing_name" v-on:keyup.enter="change_name" class="input" type="text" placeholder="輸入新名稱">
+							<input ref="name_input" v-model="typing_name" v-on:keyup.enter="change_name" class="input" type="text" placeholder="輸入新名稱">
 							<a class="button is-info" v-on:click="change_name">
 								確認
 							</a>
@@ -62,7 +62,7 @@
 					<tr>
 						<th>
 							<label class="checkbox">
-								<input type="checkbox" v-on:click="select(choice.name, $event)" value={{choice.name}} name="choice" v-model="selected">
+								<input type="checkbox" v-on:click="select(choice.name, $event)" :value="choice.name" :checked="choice.selected" name="choice">
 								{{choice.name}}
 							</label>
 						</th>
@@ -72,9 +72,9 @@
 				</tbody>
 			</table>
 		</div>
-		<span>{{selected | json}}</span>
+		<span>{{choices.filter((c) => c.selected).map((c) => c.name)}}</span>
 	</div>
 
-	<script type="text/javascript" src="/js/voting.bundle.js"></script>
+	<script type="text/javascript" src="/build/voting.bundle.js"></script>
 </body>
 </html>

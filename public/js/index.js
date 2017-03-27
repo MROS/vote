@@ -1,5 +1,5 @@
-var Vue = require('../bower_components/vue/dist/vue.js');
-Vue.use(require('../bower_components/vue-resource/dist/vue-resource.js'));
+var Vue = require('vue');
+Vue.use(require('vue-resource'));
 var header = require('./header.js').header;
 
 Vue.component('my-header', header)
@@ -11,14 +11,14 @@ new Vue({
 		username: '',
 		new_choice: '',
 		choices: [],
-		multi_select: '',
+		multi_select: '複選',
 		need_name: '',
 		need_login: '',
 		alert: false,
 		is_login: false,
 		is_loaded: true
 	},
-	ready: function(){
+	mounted: function(){
 		this.$http.get('/is_auth').then(
 			function (response) {
 				if (response.data.res == false) {
@@ -48,7 +48,7 @@ new Vue({
 				return;
 			}
 
-			data = {
+			var data = {
 				title: this.title,
 				multi_select: this.multi_select == "複選" ? true : false,
 				need_name: this.need_name == "yes" ? true : false,

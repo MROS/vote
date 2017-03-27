@@ -98,9 +98,6 @@ function client_data(raw_data, that) {
 		return data;
 	} 
 
-	// 權限正常，則繼續
-	data.choices = raw_data.choices;
-
 	var id;
 	if (data.need_login && !data.need_name) {
 		id = that.req.user.id;
@@ -114,17 +111,23 @@ function client_data(raw_data, that) {
 		id = that.session.who;
 	}
 
-	var selected = [];
-	for (var c of data.choices) {
+	data.choices = [];
+
+	for (var c of raw_data.choices) {
+		var selected = false;
 		for (var v in c.voters) {
 			if (c.voters[v].id == id) {
-				selected.push(c.name);
+				selected = true;
 			}
 			c.voters[v] = c.voters[v].username;
 		}
+		data.choices.push({
+			selected: selected,
+			name: c.name,
+			voters: c.voters,
+		})
 	}
-	console.log(selected);
-	data.selected = selected;
+	console.log(data.choices);
 	return data;
 }
 

@@ -1,5 +1,5 @@
-var Vue = require('../bower_components/vue/dist/vue.js');
-Vue.use(require('../bower_components/vue-resource/dist/vue-resource.js'));
+var Vue = require('vue');
+Vue.use(require('vue-resource'));
 var header = require('./header.js').header;
 
 Vue.component('my-header', header);
@@ -13,7 +13,6 @@ var get_data = function(long_polling, once) {
 				console.log(response.data);
 				this.title = response.data.title;
 				this.choices = response.data.choices;
-				this.selected = response.data.selected;
 				this.need_name = response.data.need_name;
 				this.need_login = response.data.need_login;
 				this.is_login = response.data.is_login;
@@ -37,7 +36,6 @@ var vm = new Vue({
 		title: '',
 		choices: [
 		],
-		selected: [],
 		username: '',
 		changing_name: false,
 		typing_name: '',
@@ -50,7 +48,6 @@ var vm = new Vue({
 	computed: {
 		about_setting: function() {
 			var str = ""
-			console.log(this.multi_select)
 			str += (this.need_name ? '#記名 ' : '#匿名 ')
 			str += (this.need_login ? '#需登入 ' : '#不需登入 ')
 			str += (this.multi_select ? '#複選' : '#單選')
@@ -73,13 +70,12 @@ var vm = new Vue({
 			return this.need_login && !this.is_login
 		}
 	},
-	ready: get_data(false, false),
+	mounted: get_data(false, false),
 	methods: {
 		turn_on_changing: function() {
 			this.changing_name = true;
 			Vue.nextTick(function(){
-				console.log(this.$els)
-				this.$els.name_input.focus(); // TODO: 升級vue.js 2時將$els改為$refs
+				this.$refs.name_input.focus();
 			}.bind(this))
 		},
 		turn_off_changing: function() {
@@ -102,24 +98,20 @@ var vm = new Vue({
 				event.preventDefault();
 				return;
 			}
-			var target = null;
-			for (i of this.choices) {
-				if (i.name == item) {
-					target = i;
+			var myChoice = null;
+			for (let choice of this.choices) {
+				if (choice.name == item) {
+					myChoice = choice;
 				}
 			}
-			if (target != null) {
-				console.log(this.selected)
-				var id = this.selected.indexOf(target.name);
+			if (myChoice != null) {
 				var data;
-				if (id >= 0) { // indexOf在找不到目標時回傳-1
-					target.voters.splice(this.username, 1);
-
-					data = JSON.stringify({type: "remove", name: target.name})
+				if (myChoice.selected) {
+					myChoice.voters.splice(this.username, 1);
+					data = JSON.stringify({type: "remove", name: myChoice.name})
 				} else {
-					target.voters.push(this.username);
-
-					data = JSON.stringify({type: "add", name: target.name})
+					myChoice.voters.push(this.username);
+					data = JSON.stringify({type: "add", name: myChoice.name})
 				}
 
 				var index = window.location.pathname.substring(3);
